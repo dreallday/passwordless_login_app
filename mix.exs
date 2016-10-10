@@ -19,7 +19,7 @@ defmodule PasswordlessLoginApp.Mixfile do
   def application do
     [mod: {PasswordlessLoginApp, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex]]
+                    :phoenix_ecto, :postgrex, :bamboo]]
   end
 
   # Specifies which paths to compile per environment.
@@ -38,6 +38,7 @@ defmodule PasswordlessLoginApp.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
      {:secure_random, "~> 0.5"},
+     {:bamboo, "~> 0.7.0"},
      {:cowboy, "~> 1.0"}]
   end
 

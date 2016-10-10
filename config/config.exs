@@ -22,6 +22,11 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+# This is needed in a config file, not sure how to import the api-key in a config, from another config.
+# config :passwordless_login_app, PasswordlessLoginApp.Mailer,
+#   adapter: Bamboo.SendgridAdapter,
+#   api_key: Application.get_env(:passwordless_login_app, :sg_key)
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

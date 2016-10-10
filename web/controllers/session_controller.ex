@@ -1,7 +1,6 @@
 defmodule PasswordlessLoginApp.SessionController do
   use PasswordlessLoginApp.Web, :controller
-  alias PasswordlessLoginApp.User
-
+  alias PasswordlessLoginApp.{Mailer, SimpleAuth, User}
 
   def new(conn, _params) do
     changeset = User.changeset(%User{})
@@ -22,7 +21,8 @@ defmodule PasswordlessLoginApp.SessionController do
       end
       |> User.registration_changeset(user_params)
     case Repo.insert_or_update(user_struct) do
-      {:ok, _} ->
+      {:ok, user} ->
+        Task.async(fn -> Mailer.send_login_token(user) |> Mailer.deliver_now end)
         conn
         |> put_flash(:info, "We sent you a link to create an account, Plx check your email")
         |> redirect(to: page_path(conn, :index))
