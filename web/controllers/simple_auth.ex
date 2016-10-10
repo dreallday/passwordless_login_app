@@ -8,6 +8,12 @@ defmodule PasswordlessLoginApp.SimpleAuth do
     opts
   end
 
+  def login(conn, user) do
+    conn
+    |> put_session(:user_id, user.id)
+    |> configure_session(renew: true)
+  end
+
   def call(conn, _opts) do
     user_id = get_session(conn, :user_id)
     assign_current_user(conn, user_id)
