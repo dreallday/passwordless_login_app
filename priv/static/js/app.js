@@ -1465,6 +1465,12 @@ require.register("web/static/js/app.js", function(exports, require, module) {
 "use strict";
 
 require("phoenix_html");
+
+var _socket = require("./socket");
+
+var _socket2 = _interopRequireDefault(_socket);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 });
 
 ;require.register("web/static/js/socket.js", function(exports, require, module) {
@@ -1530,7 +1536,24 @@ var socket = new _phoenix.Socket("/socket", { params: { token: window.userToken 
 socket.connect();
 
 // Now that you are connected, you can join channels with a topic:
-var channel = socket.channel("topic:subtopic", {});
+var channel = socket.channel("room:lobby", {});
+
+var chatInput = document.querySelector("#chat-input");
+var messagesContainer = document.querySelector("#messages");
+
+chatInput.addEventListener("keypress", function (event) {
+  if (event.keyCode === 13) {
+    channel.push("shout", { body: chatInput.value });
+    chatInput.value = "";
+  }
+});
+
+channel.on("shout", function (payload) {
+  var messageItem = document.createElement("li");
+  messageItem.innerText = "[" + Date() + "] " + payload.body;
+  messagesContainer.appendChild(messageItem);
+});
+
 channel.join().receive("ok", function (resp) {
   console.log("Joined successfully", resp);
 }).receive("error", function (resp) {

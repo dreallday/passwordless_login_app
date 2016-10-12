@@ -3,6 +3,7 @@ defmodule PasswordlessLoginApp.UserSocket do
 
   ## Channels
   # channel "room:*", PasswordlessLoginApp.RoomChannel
+  channel "room:lobby", PasswordlessLoginApp.RoomChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
